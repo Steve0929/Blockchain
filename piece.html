@@ -323,12 +323,17 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var projector = new THREE.Projector();
 
-$( document ).ready(function() {
+
+
 window.onload = function() {
-      init();
-      animate();
+setTimeout(startEnviro, 6000);
     };
-});
+
+
+function startEnviro(){
+  init();
+  animate();
+}
 
 function init(){
 fov = 75;
