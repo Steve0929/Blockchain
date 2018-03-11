@@ -1,0 +1,478 @@
+<html>
+<head>
+<title>BlockChain</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/fruitStyle/style.css"> -->
+
+<link rel="stylesheet" type="text/css" href="piece.css">
+<!-- <meta name="viewport" content="width=device-width"> -->
+<meta name="viewport" content="width=device-width">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'>  </script>
+<script src="JQuery/jquery-3.1.1.js"> </script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+crossorigin="anonymous"></script>
+
+<link rel="apple-touch-icon" sizes="57x57" href="pieceImg/favs/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="pieceImg/favs/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="pieceImg/favs/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="pieceImg/favs/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="pieceImg/favs/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="pieceImg/favs/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="pieceImg/favs/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="pieceImg/favs/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="pieceImg/favs/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="pieceImg/favs/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="pieceImg/favs/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="pieceImg/favs/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="pieceImg/favs/favicon-16x16.png">
+<link rel="manifest" href="pieceImg/favs/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="pieceImg/favs/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+</head>
+
+<style>
+#man{
+border-color: rgb(255, 163, 158);
+background-color: rgb(255, 241, 240);
+color: rgb(245, 34, 45);
+border-radius: 5px;
+padding: 6px;
+}
+#canvas{
+width: 100% !important;
+}
+
+#datos{
+  border: 0px !important;
+  color: black !important;
+  background-color: white !important;
+
+}
+.stage.addBlock
+{
+        -webkit-transform: scale(0.2);
+        -ms-transform: scale(0.2);
+        transform: scale(0.2);
+        left: -500px;
+        top: -200px;
+}
+.mined{
+border-color: rgb(183, 235, 143) !important;
+background-color: rgb(246, 255, 237) !important;
+color: rgb(82, 196, 26) !important;
+}
+.form {
+  border-radius: 8px;
+}
+.form h1{
+  color: white;
+}
+#blockContainer{
+  margin-bottom: 0px;
+  float: left !important;
+}
+#status{
+/*border-color:  rgb(91, 72, 162);
+background-color: rgb(116, 93, 197);
+color: rgb(6, 43, 0); */
+}
+.img-circle{
+-webkit-filter: brightness(100%);
+}
+.img-circle:hover{
+-webkit-filter: brightness(90%);
+}
+@media only screen and (max-device-width: 480px) {
+.img-circle{
+    width: 5%;
+    height: 5%;
+  }
+  #blockContainer{
+     /* transform: scale(1.2);  Igual que: scaleX(0.7) scaleY(0.7) */
+  }
+}
+</style>
+
+<body>
+  <div id="canvas">
+<!--  <div id="blockContainer" class="stage containers z-depth-3"> -->
+ <!-- </div> -->
+</div>
+<div id="blockContainer" class="layer layer-1 light-blue darken-3 white-text">
+  <div style= "padding-top: 100px !important"; id="chati2" class="container-fluid colores2" >
+    <div class="form">
+      <h1>Add a block to the BlockChain </h1>
+      <br>
+      <div id="syc" class="card card-body ">
+        <p>Syncing the latest chain...</p>
+      </div>
+      <br>
+      <div  id="man2">
+      <div id="status" class="card card-body ">
+      <p>Status: </p>
+      </div>
+      <br>
+    <div></div>
+      <div id="man" class="card card-body ">
+        <p>Hash</p>
+      </div>
+       <br>
+      <input type="text" id="datos" placeholder="Add some data to this block">
+      <br>
+      <a href="#"><img src="pieceImg/min.png" class="img-circle"  onclick="startMining()" width="70" height="70" ></a>
+
+      <button id="stM" type="button"  class="btn btn-warning">Mine</button>
+      <button id="chB" type="button" onclick="checkChain()" class="btn btn-warning">Check Blockchain</button>
+      <!-- <button id="add" type="button"  onclick="addToEcosystem()" class="btn btn-warning">Add to the Blockchain</button> -->
+
+
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<script src="sha256.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/three.js"></script>
+<script src="js/renderers/Projector.js"></script>
+<script src="js/renderers/CanvasRenderer.js"></script>
+
+<script>
+class Block{
+      constructor(index, timestamp, data, previousHash){
+        this.index = index;
+        this.timestamp = timestamp;
+        this.previousHash = previousHash;
+        this.data = data;
+        this.hash = this.calculateHash();
+        this.nonce = 0;
+        this.Mine(4);
+        this.ecoX= Math.random() * 1000-500 ;
+        this.ecoY= Math.random() * 1000-500 ;
+        this.ecoZ= Math.random() * 1000-500 ;
+        this.color = Math.random() * 0xffffff;
+      }
+      calculateHash(){
+        return Sha256.hash(this.nonce + this.index + this.timestamp + this.previousHash + JSON.stringify(this.data)).toString();
+      }
+      Mine(difficulty){
+        var arr = [];
+        while(this.hash.substring(0, difficulty) !== Array(difficulty+1).join('0')){
+            arr[this.nonce]= this.hash;
+            //console.log("Minning block...");
+            this.hash = this.calculateHash();
+            //console.log(this.hash);
+            this.nonce++;
+        }
+        console.log("Mined "+this.hash);
+        var final = this.hash;
+        var finalDat = this.data;
+        var j = 0
+        if(this.index !== 0){
+           draw();
+         }
+      //render(final,arr,j);
+        function draw() {
+            document.getElementById("man").innerHTML = "<p>"+arr[j];+".</p>";
+            j++;
+            if (j < arr.length/90) {
+                window.setTimeout(draw, 0);
+                }
+            else{
+              document.getElementById("man").classList.add('mined');
+              document.getElementById("man").innerHTML = "<p>"+final;+".</p>";
+              document.getElementById("status").innerHTML = "<p>"+"Status: Block mined and successfully added to the chain"+".</p>";
+              document.getElementById("datos").innerHTML = "<p>"+"xd"+"</p>";
+              //document.getElementById("showDat").innerHTML = "<p>"+finalDat+"</p>";
+                }
+          }
+      }
+}
+class BlockChain{
+        constructor(){
+          this.chain = [];
+        }
+        lastBlock(){
+          return this.chain[this.chain.length -1];
+        }
+    /*    addBlock(newBlock){
+          newBlock.previousHash = this.lastBlock().hash;
+          newBlock.hash = newBlock.calculateHash();
+          this.chain.push(newBlock);
+        } */
+        createBlock(data){
+          var previousBlock = this.lastBlock();
+          var previousBlockHash = this.lastBlock().hash;
+          var newIndex = previousBlock.index + 1;
+          var timestamp = Date.now();
+          var newBlock = new Block (newIndex, timestamp, data, previousBlockHash);
+          //newBlock.Mine(2);
+          console.log("Adding block to the chain");
+          this.chain.push(newBlock);
+          console.log("Block added");
+        }
+        validChain(){
+          for (var i = 1; i < this.chain.length; i++) {
+              var  currentBlock = this.chain[i];
+              var  previousBlock = this.chain[i-1];
+            /*
+              if(currentBlock.hash !== currentBlock.calculateHash()){
+                  console.log("Calculated hash is invalid");
+                  return false;
+              }*/
+              if(currentBlock.previousHash !== previousBlock.hash){
+                return "The chain is not valid. A block hash is invalid.";
+
+              }
+              if(currentBlock.index !== (previousBlock.index)+1){
+                return "The chain is not valid. A block index is invalid.";
+
+              }
+          }
+          return "The chain is valid";
+        }
+}
+
+var socket = io.connect();
+var blockChain = new BlockChain();
+var drawNewBlock = false;
+
+$.get("/getLatestChainOnStart", function(data) {
+      document.getElementById("syc").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+      for (var i = 0; i < data.length; i++) {
+           blockChain.chain[i] = data[i];
+      }
+      console.log("On start the latest chain is: "+JSON.stringify(blockChain));
+      if(blockChain.chain.length !==null){
+         document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
+      }
+      else{
+         document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
+      }
+    })
+
+
+socket.on('Current_blockChain', function(data){
+        document.getElementById("syc").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+        blockChain.chain = []; //reset the chain
+        for (var i = 0; i < data.length; i++) {
+            blockChain.chain[i] = data[i];
+            }
+        console.log("The current most recent chain is: "+JSON.stringify(blockChain));
+        if(blockChain.chain.length>0){
+           document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
+        }
+        else{
+           document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
+        }
+    });
+
+function startMining(){
+  document.getElementById("status").innerHTML = "<p>"+"Status: Mining block..."+".</p>";
+  document.getElementById("man").classList.remove('mined');
+  var datos = document.getElementById('datos').value;
+  blockChain.createBlock(datos);
+  var toSendBlock = blockChain.lastBlock();
+  socket.emit('send_block', toSendBlock);
+}
+
+
+function checkChain(){
+    document.getElementById("status").innerHTML = "<p> Status: "+ blockChain.validChain()+"</p>";
+}
+
+
+function addToEcosystem(){
+    var hash = 0;
+    var previousHash = 0;
+    var data = 0;
+    document.getElementById("blockContainer").classList.add('addBlock');
+}
+
+
+//THREEJS BLOCKCHAIN ECOSYSTEM//
+//****************************//
+var WIDTH = window.innerWidth,
+    HEIGHT = window.innerHeight,
+    windowHalfX = WIDTH  / 2,
+    windowHalfY = HEIGHT / 2;
+var camera, cameraZ, scene, renderer,blocks, lines, materials = [], mouseX = 0, mouseY = 0, fov, aspectRatio, nearPlane, farPlane;
+var fraction = 0;
+window.onload = function() {
+      init();
+      animate();
+};
+
+
+function init(){
+fov = 75;
+aspectRatio = WIDTH / HEIGHT;
+nearPlane = 1;
+farPlane = 2000; //3000
+cameraZ = farPlane / 3;
+var step = 0.5;
+camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane);
+camera.position.z = cameraZ;
+scene = new THREE.Scene();
+container = document.createElement('div');
+document.body.appendChild(container);
+document.body.style.margin = 0;
+document.body.style.overflow = 'hidden';
+geometry = new THREE.Geometry();
+//Adding the blocks of the blockChain
+var geometry = new THREE.Geometry();
+var lineGeometry = new THREE.Geometry();
+var positions = [];
+for (i = 0; i <blockChain.chain.length; i++) {
+  var dotGeometry = new THREE.Geometry();
+  var x = blockChain.chain[i].ecoX;
+  var y = blockChain.chain[i].ecoY;
+  var z = blockChain.chain[i].ecoZ;
+  dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
+  var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
+  var dot = new THREE.Points( dotGeometry, dotMaterial );
+  dot.material.color.setHex(blockChain.chain[i].color);
+  scene.add(dot);
+  positions[i] = dot.position;
+  //geometry.vertices.push( dot.position );
+  geometry.vertices.push(new THREE.Vector3(x,y,z));
+}
+
+var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color:  0x666666, opacity: 1 } ) );
+scene.add( line );
+/*
+socket.on('draw_mined_block', function(data){
+            console.log("draw mined");
+            var geometry = new THREE.Geometry();
+            var dotGeometry = new THREE.Geometry();
+            var x = blockChain.chain[blockChain.chain.length-1].ecoX;
+            var y = blockChain.chain[blockChain.chain.length-1].ecoY;
+            var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
+            dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
+            var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
+            var dot = new THREE.Points( dotGeometry, dotMaterial );
+            dot.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
+            scene.add(dot);
+            geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
+                                    blockChain.chain[blockChain.chain.length-2].ecoY,
+                                    blockChain.chain[blockChain.chain.length-2].ecoZ));
+            geometry.vertices.push(new THREE.Vector3(x,y,z));
+
+
+            var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff, opacity: 1 } ) );
+            scene.add( line );
+          });  */
+var flag = false;
+socket.on('draw_mined_block', function(data){
+          scene.remove( linez );
+          clearInterval(timer);
+
+          var geometry = new THREE.Geometry();
+          var dotGeometry = new THREE.Geometry();
+          var x = blockChain.chain[blockChain.chain.length-1].ecoX;
+          var y = blockChain.chain[blockChain.chain.length-1].ecoY;
+          var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
+          dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
+          var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
+          var dot = new THREE.Points( dotGeometry, dotMaterial );
+          dot.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
+          scene.add(dot);
+          geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
+                                  blockChain.chain[blockChain.chain.length-2].ecoY,
+                                  blockChain.chain[blockChain.chain.length-2].ecoZ));
+          var xd = new THREE.Vector3(x,y,z);
+          //geometry.vertices.push(new THREE.Vector3(x,y,z));
+          var linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x666666, opacity: 1 } ) );
+          scene.add( linez );
+          var timer = setInterval( addStep, 500 );
+
+          function addStep() {
+          vertices = geometry.vertices;
+          /*last = vertices[ vertices.length - 1 ];
+          vertices.push(
+          new THREE.Vector3(
+          last.x + ( xd.x) * step,
+          last.y + ( xd.y) * step,
+          last.z + ( xd.z)* step )
+          );*/
+          vertices.push(xd);
+          //console.log((vertices));
+          geometry = new THREE.Geometry();
+          geometry.vertices = vertices;
+          scene.remove( linez );
+          linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff, opacity: 1 } ))
+          scene.add( linez );
+          console.log("execut");
+          }
+
+});
+
+
+
+renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setClearColor (0x00000, 0 );
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(WIDTH, HEIGHT);
+//container.appendChild(renderer.domElement);
+document.getElementById('canvas').appendChild(renderer.domElement);
+/* Event Listeners */
+window.addEventListener('resize', onWindowResize, false);
+document.addEventListener('mousemove', onDocumentMouseMove, false);
+document.addEventListener('touchstart', onDocumentTouchStart, false);
+document.addEventListener('touchmove', onDocumentTouchMove, false);
+}
+function animate() {
+
+        requestAnimationFrame(animate);
+        render();
+        //stats.update();
+    }
+function render() {
+  var time = Date.now() * 0.00005;
+  camera.position.x += (mouseX - camera.position.x) * 0.05;
+  camera.position.y += (-mouseY - camera.position.y) * 0.05;
+  camera.lookAt(scene.position);
+  renderer.render(scene, camera);
+  }
+function onDocumentMouseMove(e) {
+   mouseX = e.clientX - windowHalfX;
+   mouseY = e.clientY - windowHalfY;
+       }
+/*	Mobile users?  I got your back homey	*/
+function onDocumentTouchStart(e) {
+   if (e.touches.length === 1) {
+       //e.preventDefault();
+       mouseX = e.touches[0].pageX - windowHalfX;
+       mouseY = e.touches[0].pageY - windowHalfY;
+               }
+           }
+function onDocumentTouchMove(e) {
+   if (e.touches.length === 1) {
+       //e.preventDefault();
+       mouseX = e.touches[0].pageX - windowHalfX;
+       mouseY = e.touches[0].pageY - windowHalfY;
+               }
+           }
+function onWindowResize() {
+windowHalfX = window.innerWidth / 2;
+windowHalfY = window.innerHeight / 2;
+camera.aspect = window.innerWidth / window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth, window.innerHeight);
+           }
+</script>
+
+</body>
+</html>
