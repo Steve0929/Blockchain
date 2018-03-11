@@ -1,0 +1,20 @@
+{
+  "name": "Esteban",
+  "version": "1.0.0",
+  "description": "Piece Blockchain",
+  "main": "piece.js",
+  "scripts": {
+     "start": "node piece.js"
+  },
+  "author": "Steve2606",
+  "license": "ISC",
+  "dependencies" :{
+    "socket.io" :"*",
+    "request" :"*",
+    "firebase" :"*",
+    "firebase-admin" :"*",
+    "crypto-js" :"*",
+    "express" : "*"
+
+    }
+}
