@@ -435,7 +435,9 @@ socket.on('draw_mined_block', function(data){
           cube.position.y = y;
           cube.position.z = z;
           cube.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
-          cube.userData = blockChain.chain[i].data;
+          cube.userData.data = blockChain.chain[blockChain.chain.length-1].data;
+          cube.userData.hash = blockChain.chain[blockChain.chain.length-1].hash;
+          cube.userData.prevHash = blockChain.chain[blockChain.chain.length-1].previousHash;
           scene.add(cube);
           geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
                                   blockChain.chain[blockChain.chain.length-2].ecoY,
