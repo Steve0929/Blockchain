@@ -91,7 +91,7 @@ function pushValidBlock(block){
   else if(block.previousHash == latestChain[latestChain.length-1].hash && block.index == (latestChain[latestChain.length-1].index)+1){
     blockChain.push(block);
     console.log("Block added");
-    io.sockets.emit('draw_mined_block' );
+    io.sockets.emit('draw_mined_block' ,block );
   }
 
 }
