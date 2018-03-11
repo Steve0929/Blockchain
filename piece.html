@@ -345,9 +345,10 @@ var positions = [];
 
 var geometryC = new THREE.BoxGeometry( 50, 50, 50 );
 var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-var cube = new THREE.Mesh( geometryC, materialC );
-scene.add( cube );
+//var cube = new THREE.Mesh( geometryC, materialC );
+//scene.add( cube );
 
+/*dots
 for (i = 0; i <blockChain.chain.length; i++) {
   var dotGeometry = new THREE.Geometry();
   var x = blockChain.chain[i].ecoX;
@@ -361,7 +362,29 @@ for (i = 0; i <blockChain.chain.length; i++) {
   positions[i] = dot.position;
   //geometry.vertices.push( dot.position );
   geometry.vertices.push(new THREE.Vector3(x,y,z));
+} */
+
+for (i = 0; i <blockChain.chain.length; i++) {
+  var dotGeometry = new THREE.BoxGeometry( 50, 50, 50 );
+  var x = blockChain.chain[i].ecoX;
+  var y = blockChain.chain[i].ecoY;
+  var z = blockChain.chain[i].ecoZ;
+  //dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
+  var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
+  var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+  //var dot = new THREE.Points( dotGeometry, dotMaterial );
+  var cube = new THREE.Mesh( geometryC, materialC );
+  cube.material.color.setHex(blockChain.chain[i].color);
+  cube.position.x = x;
+  cube.position.y = y;
+  cube.position.z = z;
+  scene.add(cube);
+  positions[i] = cube.position;
+  //geometry.vertices.push( dot.position );
+  geometry.vertices.push(new THREE.Vector3(x,y,z));
 }
+
+
 
 var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color:  0x666666, opacity: 1 } ) );
 scene.add( line );
@@ -388,6 +411,53 @@ socket.on('draw_mined_block', function(data){
             scene.add( line );
           });  */
 var flag = false;
+
+
+
+socket.on('draw_mined_block', function(data){
+          console.log("DRAWWW "+data.color);
+          scene.remove( linez );
+          clearInterval(timer);
+
+          var geometry = new THREE.Geometry();
+          var dotGeometry = new THREE.BoxGeometry( 50, 50, 50 );
+          var x = blockChain.chain[blockChain.chain.length-1].ecoX;
+          var y = blockChain.chain[blockChain.chain.length-1].ecoY;
+          var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
+          var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
+          var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+          //var dot = new THREE.Points( dotGeometry, dotMaterial );
+          var cube = new THREE.Mesh( geometryC, materialC );
+          cube.position.x = x;
+          cube.position.y = y;
+          cube.position.z = z;
+          cube.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
+          scene.add(cube);
+          geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
+                                  blockChain.chain[blockChain.chain.length-2].ecoY,
+                                  blockChain.chain[blockChain.chain.length-2].ecoZ));
+          var xd = new THREE.Vector3(x,y,z);
+          //geometry.vertices.push(new THREE.Vector3(x,y,z));
+          var linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x666666, opacity: 1 } ) );
+          scene.add( linez );
+          var timer = setInterval( addStep, 500 );
+          var oldLength = xd.length();
+
+          function addStep() {
+          vertices = geometry.vertices;
+          vertices.push(xd);
+          //console.log((vertices));
+          geometry = new THREE.Geometry();
+          geometry.vertices = vertices;
+          scene.remove( linez );
+          linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff, opacity: 1 } ))
+          scene.add( linez );
+          console.log("execut");
+          }
+
+});
+
+/*
 socket.on('draw_mined_block', function(data){
           scene.remove( linez );
           clearInterval(timer);
@@ -423,7 +493,7 @@ socket.on('draw_mined_block', function(data){
           //vertices.push(xd.setLength(xd.length()));
           //vertices.push(xd.divideScalar( 1 + ( 30 / oldLength ) ));
           //xd.setLength(100);
-          vertices.push(xd);
+      /*    vertices.push(xd);
           //console.log((vertices));
           geometry = new THREE.Geometry();
           geometry.vertices = vertices;
@@ -433,7 +503,7 @@ socket.on('draw_mined_block', function(data){
           console.log("execut");
           }
 
-});
+});  */
 
 
 
@@ -462,49 +532,20 @@ function render() {
   camera.position.x += (mouseX - camera.position.x) * 0.05;
   camera.position.y += (-mouseY - camera.position.y) * 0.05;
   camera.lookAt(scene.position);
-/*
-  raycaster.setFromCamera( mouse, camera );
-  var intersects = raycaster.intersectObjects( scene.children);
-  if(intersects.length >0){
-    console.log(intersects);
-     intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-  } */
-
-  /*if(raycaster.intersectObjects( scene.children ).length !== null){
-    console.log(raycaster.intersectObjects( scene.children ));}*/
-
   renderer.render(scene, camera);
     }
 
   function onDocumentMouseDown( e ) {
-      raycaster.setFromCamera( mouse, camera );
+      var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,     //x
+                                        -( event.clientY / window.innerHeight ) * 2 + 1,  //y
+                                        0.5 );                                            //z
+      raycaster.setFromCamera( mouse3D.clone(), camera );
       scene.updateMatrixWorld();
       var intersects = raycaster.intersectObjects( scene.children);
       if(intersects.length >0){
         console.log(intersects);
         intersects[ 0].object.material.color.setHex( Math.random() * 0xffffff );
     }
-
-      /*
-      e.preventDefault();
-      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-      var mouseVector = new THREE.Vector3(( e.clientX / window.innerWidth ) * 2 - 1,
-        - ( e.clientY / window.innerHeight ) * 2 + 1, 1 );
-
-  	//projector.unprojectVector( mouse, camera );
-  	//var raycaster = new THREE.Raycaster( camera.position, mouseVector.sub( camera.position ).normalize() );
-  	// create an array containing all objects in the scene with which the ray intersects
-
-    raycaster.setFromCamera( mouse, camera );
-    scene.updateMatrixWorld();
-  	var intersects = raycaster.intersectObjects( scene.childre, true );
-      console.log(intersects);
-      if (intersects.length>0){
-              console.log("Intersected object:", intersects.length);
-            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-      } */
   }
 
 
