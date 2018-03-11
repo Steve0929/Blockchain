@@ -310,6 +310,10 @@ var WIDTH = window.innerWidth,
     windowHalfY = HEIGHT / 2;
 var camera, cameraZ, scene, renderer,blocks, lines, materials = [], mouseX = 0, mouseY = 0, fov, aspectRatio, nearPlane, farPlane;
 var fraction = 0;
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+var projector = new THREE.Projector();
+
 window.onload = function() {
       init();
       animate();
@@ -324,6 +328,9 @@ farPlane = 2000; //3000
 cameraZ = farPlane / 3;
 var step = 0.5;
 camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane);
+
+
+
 camera.position.z = cameraZ;
 scene = new THREE.Scene();
 container = document.createElement('div');
@@ -335,6 +342,12 @@ geometry = new THREE.Geometry();
 var geometry = new THREE.Geometry();
 var lineGeometry = new THREE.Geometry();
 var positions = [];
+
+var geometryC = new THREE.BoxGeometry( 50, 50, 50 );
+var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+var cube = new THREE.Mesh( geometryC, materialC );
+scene.add( cube );
+
 for (i = 0; i <blockChain.chain.length; i++) {
   var dotGeometry = new THREE.Geometry();
   var x = blockChain.chain[i].ecoX;
@@ -397,7 +410,7 @@ socket.on('draw_mined_block', function(data){
           var linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x666666, opacity: 1 } ) );
           scene.add( linez );
           var timer = setInterval( addStep, 500 );
-
+          var oldLength = xd.length();
           function addStep() {
           vertices = geometry.vertices;
           /*last = vertices[ vertices.length - 1 ];
@@ -407,6 +420,9 @@ socket.on('draw_mined_block', function(data){
           last.y + ( xd.y) * step,
           last.z + ( xd.z)* step )
           );*/
+          //vertices.push(xd.setLength(xd.length()));
+          //vertices.push(xd.divideScalar( 1 + ( 30 / oldLength ) ));
+          //xd.setLength(100);
           vertices.push(xd);
           //console.log((vertices));
           geometry = new THREE.Geometry();
@@ -432,6 +448,7 @@ window.addEventListener('resize', onWindowResize, false);
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 document.addEventListener('touchstart', onDocumentTouchStart, false);
 document.addEventListener('touchmove', onDocumentTouchMove, false);
+document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 }
 function animate() {
 
@@ -440,12 +457,59 @@ function animate() {
         //stats.update();
     }
 function render() {
+
   var time = Date.now() * 0.00005;
   camera.position.x += (mouseX - camera.position.x) * 0.05;
   camera.position.y += (-mouseY - camera.position.y) * 0.05;
   camera.lookAt(scene.position);
+/*
+  raycaster.setFromCamera( mouse, camera );
+  var intersects = raycaster.intersectObjects( scene.children);
+  if(intersects.length >0){
+    console.log(intersects);
+     intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+  } */
+
+  /*if(raycaster.intersectObjects( scene.children ).length !== null){
+    console.log(raycaster.intersectObjects( scene.children ));}*/
+
   renderer.render(scene, camera);
+    }
+
+  function onDocumentMouseDown( e ) {
+      raycaster.setFromCamera( mouse, camera );
+      scene.updateMatrixWorld();
+      var intersects = raycaster.intersectObjects( scene.children);
+      if(intersects.length >0){
+        console.log(intersects);
+        intersects[ 0].object.material.color.setHex( Math.random() * 0xffffff );
+    }
+
+      /*
+      e.preventDefault();
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+      var mouseVector = new THREE.Vector3(( e.clientX / window.innerWidth ) * 2 - 1,
+        - ( e.clientY / window.innerHeight ) * 2 + 1, 1 );
+
+  	//projector.unprojectVector( mouse, camera );
+  	//var raycaster = new THREE.Raycaster( camera.position, mouseVector.sub( camera.position ).normalize() );
+  	// create an array containing all objects in the scene with which the ray intersects
+
+    raycaster.setFromCamera( mouse, camera );
+    scene.updateMatrixWorld();
+  	var intersects = raycaster.intersectObjects( scene.childre, true );
+      console.log(intersects);
+      if (intersects.length>0){
+              console.log("Intersected object:", intersects.length);
+            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+      } */
   }
+
+
+
+
 function onDocumentMouseMove(e) {
    mouseX = e.clientX - windowHalfX;
    mouseY = e.clientY - windowHalfY;
