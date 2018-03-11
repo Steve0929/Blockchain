@@ -378,6 +378,10 @@ for (i = 0; i <blockChain.chain.length; i++) {
   cube.position.x = x;
   cube.position.y = y;
   cube.position.z = z;
+  cube.userData.data = blockChain.chain[i].data;
+  cube.userData.hash = blockChain.chain[i].hash;
+  cube.userData.prevHash = blockChain.chain[i].previousHash;
+
   scene.add(cube);
   positions[i] = cube.position;
   //geometry.vertices.push( dot.position );
@@ -426,18 +430,17 @@ socket.on('draw_mined_block', function(data){
           var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
           var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
           var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-          //var dot = new THREE.Points( dotGeometry, dotMaterial );
           var cube = new THREE.Mesh( geometryC, materialC );
           cube.position.x = x;
           cube.position.y = y;
           cube.position.z = z;
           cube.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
+          cube.userData = blockChain.chain[i].data;
           scene.add(cube);
           geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
                                   blockChain.chain[blockChain.chain.length-2].ecoY,
                                   blockChain.chain[blockChain.chain.length-2].ecoZ));
           var xd = new THREE.Vector3(x,y,z);
-          //geometry.vertices.push(new THREE.Vector3(x,y,z));
           var linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x666666, opacity: 1 } ) );
           scene.add( linez );
           var timer = setInterval( addStep, 500 );
@@ -535,16 +538,51 @@ function render() {
   renderer.render(scene, camera);
     }
 
+
   function onDocumentMouseDown( e ) {
+      if(document.getElementById("text2") !== null){
+      var prevText = document.getElementById("text2");
+      prevText.remove();
+      //document.body.removeChild();
+      }
+
       var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,     //x
                                         -( event.clientY / window.innerHeight ) * 2 + 1,  //y
-                                        0.5 );                                            //z
+                                        0.5 );
+                                                                                //z
       raycaster.setFromCamera( mouse3D.clone(), camera );
+      function createVector(x, y, z, camera, width, height) {
+        var p = new THREE.Vector3(x, y, z);
+        var vector = p.project(camera);
+
+        vector.x = (vector.x + 1) / 2 * width;
+        vector.y = -(vector.y - 1) / 2 * height;
+
+        return vector;
+    }
+
       scene.updateMatrixWorld();
       var intersects = raycaster.intersectObjects( scene.children);
       if(intersects.length >0){
-        console.log(intersects);
-        intersects[ 0].object.material.color.setHex( Math.random() * 0xffffff );
+        console.log(intersects[0].object.userData);
+        //intersects[ 0].object.material.color.setHex( Math.random() * 0xffffff );
+        xx= intersects[0].object.position.x;
+        yy=intersects[ 0].object.position.y;
+        zz=intersects[ 0].object.position.z;
+
+        var text2 = document.createElement('div');
+        text2.style.position = 'absolute';
+        text2.id = 'text2';
+        text2.style.width = 600;
+        text2.style.height = 100;
+        text2.style.backgroundColor = "";
+        text2.font = "Arial";
+        text2.innerHTML = "Data: "+intersects[0].object.userData.data+"<br>Hash: "+
+                           intersects[0].object.userData.hash+"<br>Previous Hash: "+
+                           intersects[0].object.userData.prevHash;
+        text2.style.top =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).y); + 'px';
+        text2.style.left =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).x); + 'px';
+        document.body.appendChild(text2);
     }
   }
 
