@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="piece.css">
 <!-- <meta name="viewport" content="width=device-width"> -->
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="JQuery/jquery-3.1.1.js"> </script>
@@ -41,6 +41,10 @@ crossorigin="anonymous"></script>
 </head>
 
 <style>
+#syc{
+  width: 100%;
+  top: 60%;
+}
 #text2{
   font-family: monospace;
   border-radius: 8px;
@@ -58,9 +62,7 @@ color: rgb(245, 34, 45);
 border-radius: 5px;
 padding: 6px;
 }
-#canvas{
-width: 100% !important;
-}
+
 
 #datos{
   border: 0px !important;
@@ -68,6 +70,23 @@ width: 100% !important;
   background-color: white !important;
 
 }
+
+.hiddeIt{
+visibility: hidden;
+}
+
+.loader {
+
+}
+
+.loadStatus{
+padding: 15px;
+left: 35%;
+top: 2%;
+position: absolute;
+}
+
+
 .stage.addBlock
 {
         -webkit-transform: scale(0.2);
@@ -87,6 +106,9 @@ color: rgb(82, 196, 26) !important;
 .form h1{
   color: white;
 }
+.loading{
+  top: 50%;
+}
 #blockContainer{
   margin-bottom: 0px;
   float: left !important;
@@ -102,30 +124,90 @@ color: rgb(6, 43, 0); */
 .img-circle:hover{
 -webkit-filter: brightness(90%);
 }
+
+#canvas{
+width: 100% !important;
+height: 20% !important;
+}
+
+.mobileEndHeight{
+height: 20% !important;
+}
+
+.layerMob{
+  top: 60% !important;
+}
+
+/*MOBILE**************************************************/
 @media only screen and (max-device-width: 480px) {
 .img-circle{
     width: 5%;
     height: 5%;
   }
   #blockContainer{
+
      /* transform: scale(1.2);  Igual que: scaleX(0.7) scaleY(0.7) */
   }
+.loader{
+  position: relative !important;
+  margin: 0px !important;
+  overflow-x:hidden !important;
+  left: 40% !important;
+
+}
+
+#syc{
+  width: 100%;
+  top: 40% ;
+}
+
+#canvas{
+width: 100% !important;
+height: 30% !important;
+}
+
+.layerMob{
+  top: 50% !important;
+}
+
+
+
 }
 </style>
 
 <body>
-  <div id="canvas">
+
+<div id="canvas" class="mobileEndHeight">
 <!--  <div id="blockContainer" class="stage containers z-depth-3"> -->
  <!-- </div> -->
 </div>
-<div id="blockContainer" class="layer layer-1 light-blue darken-3 white-text">
+
+<div id="loader" class="loader">
+<div class="square" ></div>
+<div class="square"></div>
+<div class="square last"></div>
+<div class="square clear"></div>
+<div class="square"></div>
+<div class="square last"></div>
+<div class="square clear"></div>
+<div class="square "></div>
+<div class="square last"></div>
+</div>
+<br>
+
+<div id="syc" class="layer card card-body ">
+  <p>Syncing with the latest chain...</p>
+  <img src="pieceImg/3d.png" width="5%" height="5%">
+</div>
+
+<div id="blockContainer" class="hiddeIt layer loading layer-1 light-blue darken-3 white-text">
   <div style= "padding-top: 100px !important"; id="chati2" class="container-fluid colores2" >
     <div class="form">
       <h1>Add a block to the BlockChain </h1>
       <br>
-      <div id="syc" class="card card-body ">
-        <p>Syncing the latest chain...</p>
-      </div>
+      <!-- <div id="syc" class="card card-body ">
+        <p>Syncing with the latest chain...</p>
+      </div> -->
       <br>
       <div  id="man2">
       <div id="status" class="card card-body ">
@@ -264,11 +346,8 @@ $.get("/getLatestChainOnStart", function(data) {
            blockChain.chain[i] = data[i];
       }
       console.log("On start the latest chain is: "+JSON.stringify(blockChain));
-      if(blockChain.chain.length !==null){
-         document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
-      }
-      else{
-         document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
+      if(blockChain.chain.length ==null){
+        document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
       }
     })
 
@@ -324,7 +403,6 @@ var mouse = new THREE.Vector2();
 var projector = new THREE.Projector();
 
 
-
 window.onload = function() {
 setTimeout(startEnviro, 6000);
     };
@@ -333,6 +411,11 @@ setTimeout(startEnviro, 6000);
 function startEnviro(){
   init();
   animate();
+  document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
+  var loading = document.getElementById("loader");
+  loading.remove();
+//$(".layerMob").css('top', '50%');
+$( "#syc" ).addClass( "layerMob");
 }
 
 function init(){
@@ -343,7 +426,9 @@ farPlane = 2000; //3000
 cameraZ = farPlane / 3;
 var step = 0.5;
 camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane);
-
+document.getElementById("blockContainer").classList.remove('hiddeIt');
+$( "#blockContainer" ).fadeOut(0);
+//$( "#blockContainer" ).fadeIn(3000);
 
 
 camera.position.z = cameraZ;
@@ -596,7 +681,7 @@ function render() {
         text2.style.top =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).y); + 'px';
         text2.style.left =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).x); + 'px';
         document.body.appendChild(text2);
-          document.getElementById("text2").classList.add('mined');
+        document.getElementById("text2").classList.add('mined');
     }
   }
 
