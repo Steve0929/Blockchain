@@ -8,14 +8,16 @@
 <!-- <meta name="viewport" content="width=device-width"> -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 <script src="JQuery/jquery-3.1.1.js"> </script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-crossorigin="anonymous"></script>
+crossorigin="anonymous">
+</script>
 
 <link rel="apple-touch-icon" sizes="57x57" href="pieceImg/favs/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="pieceImg/favs/apple-icon-60x60.png">
@@ -44,6 +46,7 @@ crossorigin="anonymous"></script>
 #syc{
   width: 100%;
   top: 60%;
+  height: 20%;
 }
 #text2{
   font-family: monospace;
@@ -71,12 +74,17 @@ padding: 6px;
 
 }
 
+.fa_custom {
+color: #0099CC;
+}
+
 .hiddeIt{
 visibility: hidden;
 }
 
 .loader {
-
+width: 100% !important;
+max-width: 30%;
 }
 
 .loadStatus{
@@ -84,6 +92,29 @@ padding: 15px;
 left: 35%;
 top: 2%;
 position: absolute;
+}
+
+.plus{
+  margin-left: 80%;
+  top: -47px;
+  position: relative;
+  opacity: 0.7;
+}
+
+.plus:hover{
+  opacity: 1;
+}
+
+.body{
+  width: 100% !important;
+  overflow-x: hidden !important;
+
+}
+
+.cubeIco{
+  margin-left: 85%;
+  top: -10px;
+  position: relative;
 }
 
 
@@ -106,17 +137,20 @@ color: rgb(82, 196, 26) !important;
 .form h1{
   color: white;
 }
-.loading{
-  top: 50%;
+.newBlockPos{
+  top: -12%;
+  position: absolute;
 }
 #blockContainer{
   margin-bottom: 0px;
   float: left !important;
+
 }
 #status{
 /*border-color:  rgb(91, 72, 162);
 background-color: rgb(116, 93, 197);
 color: rgb(6, 43, 0); */
+padding: 7px;
 }
 .img-circle{
 -webkit-filter: brightness(100%);
@@ -128,6 +162,7 @@ color: rgb(6, 43, 0); */
 #canvas{
 width: 100% !important;
 height: 20% !important;
+
 }
 
 .mobileEndHeight{
@@ -151,7 +186,7 @@ height: 20% !important;
 .loader{
   position: relative !important;
   margin: 0px !important;
-  overflow-x:hidden !important;
+  max-width: 30%;
   left: 40% !important;
 
 }
@@ -169,8 +204,15 @@ height: 30% !important;
 .layerMob{
   top: 50% !important;
 }
+.cubeIco{
+  width: 65px;
+  height: 50px;
+  margin-left: 70%;
+}
 
-
+.newBlockPos{
+  top: -25%;
+}
 
 }
 </style>
@@ -196,18 +238,15 @@ height: 30% !important;
 <br>
 
 <div id="syc" class="layer card card-body ">
-  <p>Syncing with the latest chain...</p>
-  <img src="pieceImg/3d.png" width="5%" height="5%">
+  <p id="sycp">Syncing with the latest chain...</p>
+  <img  id="cubeic" class="cubeIco" src="pieceImg/addc.png" width="65px" height="60px">
 </div>
 
-<div id="blockContainer" class="hiddeIt layer loading layer-1 light-blue darken-3 white-text">
+<div id="blockContainer" class="hiddeIt layer newBlockPos layer-1 light-blue darken-3 white-text">
   <div style= "padding-top: 100px !important"; id="chati2" class="container-fluid colores2" >
     <div class="form">
-      <h1>Add a block to the BlockChain </h1>
-      <br>
-      <!-- <div id="syc" class="card card-body ">
-        <p>Syncing with the latest chain...</p>
-      </div> -->
+        <a href="#">X</a>
+      <h1>Add a new block to the chain </h1>
       <br>
       <div  id="man2">
       <div id="status" class="card card-body ">
@@ -223,7 +262,7 @@ height: 30% !important;
       <br>
       <a href="#"><img src="pieceImg/min.png" class="img-circle"  onclick="startMining()" width="70" height="70" ></a>
 
-      <button id="stM" type="button"  class="btn btn-warning">Mine</button>
+      <button id="stM" type="button" onclick="startMining()"  class="btn btn-warning">Mine</button>
       <button id="chB" type="button" onclick="checkChain()" class="btn btn-warning">Check Blockchain</button>
       <!-- <button id="add" type="button"  onclick="addToEcosystem()" class="btn btn-warning">Add to the Blockchain</button> -->
 
@@ -239,6 +278,7 @@ height: 30% !important;
 <script src="js/three.js"></script>
 <script src="js/renderers/Projector.js"></script>
 <script src="js/renderers/CanvasRenderer.js"></script>
+<script src="js/controls/OrbitControls.js"></script>
 
 <script>
 class Block{
@@ -339,31 +379,50 @@ class BlockChain{
 var socket = io.connect();
 var blockChain = new BlockChain();
 var drawNewBlock = false;
+//LOAD AND START*******
+window.onload = function() {
+setTimeout(startEnviro, 6000);
+    };
+
 
 $.get("/getLatestChainOnStart", function(data) {
-      document.getElementById("syc").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+      document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
       for (var i = 0; i < data.length; i++) {
            blockChain.chain[i] = data[i];
       }
       console.log("On start the latest chain is: "+JSON.stringify(blockChain));
-      if(blockChain.chain.length ==null){
-        document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
-      }
     })
+
+function startEnviro(){
+
+  if(blockChain.chain.length ==0){
+    document.getElementById("sycp").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
+    setTimeout(startEnviro, 3000);
+  }
+  else if(blockChain.chain.length >0){ //Synced can proceed to draw the chain
+      document.getElementById("sycp").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
+      init();
+      animate();
+      var loading = document.getElementById("loader");
+      loading.remove();
+      $( "#syc" ).addClass("layerMob");
+    }
+}
+
 
 
 socket.on('Current_blockChain', function(data){
-        document.getElementById("syc").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+        document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
         blockChain.chain = []; //reset the chain
         for (var i = 0; i < data.length; i++) {
             blockChain.chain[i] = data[i];
             }
         console.log("The current most recent chain is: "+JSON.stringify(blockChain));
         if(blockChain.chain.length>0){
-           document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
+           document.getElementById("sycp").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
         }
         else{
-           document.getElementById("syc").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
+           document.getElementById("sycp").innerHTML = "<p>"+"The latest chain could not be synced"+".</p>";
         }
     });
 
@@ -378,7 +437,7 @@ function startMining(){
 
 
 function checkChain(){
-    document.getElementById("status").innerHTML = "<p> Status: "+ blockChain.validChain()+"</p>";
+    document.getElementById("sycp").innerHTML = "<p> Status: "+ blockChain.validChain()+"</p>";
 }
 
 
@@ -389,6 +448,15 @@ function addToEcosystem(){
     document.getElementById("blockContainer").classList.add('addBlock');
 }
 
+/*
+$("#cubeic").click(function(){
+  $( "#blockContainer" ).fadeIn(2000);
+});*/
+
+
+$("#cubeic").click(function(){
+  $( "#blockContainer" ).slideToggle(1);
+});
 
 //THREEJS BLOCKCHAIN ECOSYSTEM//
 //****************************//
@@ -403,21 +471,6 @@ var mouse = new THREE.Vector2();
 var projector = new THREE.Projector();
 
 
-window.onload = function() {
-setTimeout(startEnviro, 6000);
-    };
-
-
-function startEnviro(){
-  init();
-  animate();
-  document.getElementById("syc").innerHTML = "<p>"+"Synced with the latest chain"+".</p>";
-  var loading = document.getElementById("loader");
-  loading.remove();
-//$(".layerMob").css('top', '50%');
-$( "#syc" ).addClass( "layerMob");
-}
-
 function init(){
 fov = 75;
 aspectRatio = WIDTH / HEIGHT;
@@ -426,6 +479,7 @@ farPlane = 2000; //3000
 cameraZ = farPlane / 3;
 var step = 0.5;
 camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane);
+
 document.getElementById("blockContainer").classList.remove('hiddeIt');
 $( "#blockContainer" ).fadeOut(0);
 //$( "#blockContainer" ).fadeIn(3000);
@@ -615,6 +669,9 @@ renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setClearColor (0x00000, 0 );
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(WIDTH, HEIGHT);
+controls = new THREE.OrbitControls( camera, renderer.domElement );
+controls.addEventListener( 'change', render );
+
 //container.appendChild(renderer.domElement);
 document.getElementById('canvas').appendChild(renderer.domElement);
 /* Event Listeners */
@@ -627,15 +684,16 @@ document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 function animate() {
 
         requestAnimationFrame(animate);
+        controls.update();
         render();
         //stats.update();
     }
 function render() {
 
   var time = Date.now() * 0.00005;
-  camera.position.x += (mouseX - camera.position.x) * 0.05;
-  camera.position.y += (-mouseY - camera.position.y) * 0.05;
-  camera.lookAt(scene.position);
+  //camera.position.x += (mouseX - camera.position.x) * 0.05;
+  //camera.position.y += (-mouseY - camera.position.y) * 0.05;
+  //camera.lookAt(scene.position);
   renderer.render(scene, camera);
     }
 
@@ -702,7 +760,7 @@ function onDocumentTouchStart(e) {
            }
 function onDocumentTouchMove(e) {
    if (e.touches.length === 1) {
-       //e.preventDefault();
+       e.preventDefault();
        mouseX = e.touches[0].pageX - windowHalfX;
        mouseY = e.touches[0].pageY - windowHalfY;
                }
