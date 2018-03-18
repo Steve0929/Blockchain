@@ -279,7 +279,9 @@ padding: 3px !important;
 
 }
 
-
+#man{
+max-height: 290px !important;
+}
 
 
 }
@@ -306,7 +308,7 @@ padding: 3px !important;
 <br>
 
 <div id="syc" class="layer card card-body ">
-  <h4 id="sycp">Syncing with the latest chain...</h4>
+  <h5 id="sycp">Syncing with the latest chain...</h5>
   <img  id="cubeic"  onclick="toggleForm()" class="cubeIco" src="pieceImg/addc.png" width="65px" height="60px">
 </div>
 
@@ -316,7 +318,7 @@ padding: 3px !important;
 <!--<div id="blockContainer" class="hiddeIt layer newBlockPos layer-1 light-blue darken-3 white-text"> -->
 
 <div id="blockContainer" class="hiddeIt layer newBlockPos layer-1 light-blue darken-3 white-text">
-  <div style= "padding-top: 100px !important"; id="chati2" class="container-fluid colores2" >
+  <div style= "padding-top: 70px !important"; id="chati2" class="container-fluid colores2" >
     <div class="form">
     <!--  <div class="modal-header">
        <button type="button" class="close btn btn-danger"  onclick="ecs()"  aria-hidden="true">×</button>
@@ -512,14 +514,20 @@ socket.on('Current_blockChain', function(data){
     });
 
 function startMining(){
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+     alert("Mining will start now. Please be patient as this process is CPU intensive.");
+    }
   document.getElementById("status").innerHTML = "<p>"+"Status: Mining block..."+".</p>";
   document.getElementById("man").classList.remove('mined');
   var datos = document.getElementById('datos').value;
-  blockChain.createBlock(datos);
+  setTimeout( test(datos), 2000);
+}
+
+function test(data){
+  blockChain.createBlock(data);
   var toSendBlock = blockChain.lastBlock();
   socket.emit('send_block', toSendBlock);
 }
-
 
 function checkChain(){
     document.getElementById("sycp").innerHTML = "<p> Status: "+ blockChain.validChain()+"</p>";
