@@ -9,7 +9,9 @@ html *{
 }
 
 body{
-  background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/tiny_grid.png'); */
+/*  background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/tiny_grid.png'); */
+
+ background-color: black !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 .containers{
