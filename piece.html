@@ -44,6 +44,7 @@ crossorigin="anonymous">
   width: 100%;
   top: 60%;
   height: 20%;
+
 }
 #text2{
   font-family: monospace;
@@ -111,7 +112,7 @@ position: absolute;
 
 .cubeIco{
   margin-left: 85%;
-  top: -10px;
+  top: 0px;
   position: relative;
 }
 
@@ -247,12 +248,16 @@ height: 30% !important;
 .cubeIco{
   width: 65px;
   height: 50px;
-  margin-left: 70%;
+  margin-left: 75%;
+  top: -20% !important;
+
 
 }
 
 .newBlockPos{
-  top: -25% ;
+  margin-top: -100%;
+  max-height: 250px !important;
+  position: relative !important;
 }
 
 .textMobile2{
@@ -300,7 +305,7 @@ padding: 3px !important;
 <br>
 
 <div id="syc" class="layer card card-body ">
-  <p id="sycp">Syncing with the latest chain...</p>
+  <h4 id="sycp">Syncing with the latest chain...</h4>
   <img  id="cubeic"  onclick="toggleForm()" class="cubeIco" src="pieceImg/addc.png" width="65px" height="60px">
 </div>
 
@@ -465,7 +470,7 @@ setTimeout(startEnviro, 6000);
 
 
 $.get("/getLatestChainOnStart", function(data) {
-      document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+      document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+"</p>";
       for (var i = 0; i < data.length; i++) {
            blockChain.chain[i] = data[i];
       }
@@ -491,7 +496,7 @@ function startEnviro(){
 
 
 socket.on('Current_blockChain', function(data){
-        document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+".</p>";
+        document.getElementById("sycp").innerHTML = "<p>"+"Syncing with the latest chain..."+"</p>";
         blockChain.chain = []; //reset the chain
         for (var i = 0; i < data.length; i++) {
             blockChain.chain[i] = data[i];
@@ -533,7 +538,6 @@ function toggleForm(){
   //$( "#blockContainer" ).slideToggle(1);
   if(!toggleAddForm){
      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-        alert("click");
         document.getElementById('blockContainer').classList.remove('scaleDownFormMobile');
         document.getElementById('blockContainer').classList.add('scaleUpForm');
       }
@@ -545,7 +549,6 @@ function toggleForm(){
     }
   else if(toggleAddForm){
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-        alert("click");
         document.getElementById('blockContainer').classList.remove('scaleUpForm');
         document.getElementById('blockContainer').classList.add('scaleDownFormMobile');
        }
