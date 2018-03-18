@@ -1,0 +1,45 @@
+function onDocumentMouseDown( e ) {
+      if(document.getElementById("text2") !== null){
+      var prevText = document.getElementById("text2");
+      prevText.remove();
+      }
+
+      var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,     //x
+                                        -( event.clientY / window.innerHeight ) * 2 + 1,  //y
+                                        0.5 );
+                                                                                //z
+      raycaster.setFromCamera( mouse3D.clone(), camera );
+
+      function createVector(x, y, z, camera, width, height) {
+        var p = new THREE.Vector3(x, y, z);
+        var vector = p.project(camera);
+        vector.x = (vector.x + 1) / 2 * width;
+        vector.y = -(vector.y - 1) / 2 * height;
+        return vector;
+    }
+
+      scene.updateMatrixWorld();
+      var intersects = raycaster.intersectObjects( scene.children);
+      if(intersects.length >0){
+        console.log(intersects[0].object.userData);
+        //intersects[ 0].object.material.color.setHex( Math.random() * 0xffffff );
+        xx= intersects[0].object.position.x;
+        yy=intersects[ 0].object.position.y;
+        zz=intersects[ 0].object.position.z;
+
+        var text2 = document.createElement('div');
+        text2.style.position = 'absolute';
+        text2.id = 'text2';
+        text2.style.width = 600;
+        text2.style.height = 100;
+        text2.style.backgroundColor = "";
+        text2.innerHTML = "Data: "+intersects[0].object.userData.data+"<br>Hash: "+
+                           intersects[0].object.userData.hash+"<br>Previous Hash: "+
+                           intersects[0].object.userData.prevHash;
+        text2.style.top =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).y); + 'px';
+        text2.style.left =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).x); + 'px';
+        document.body.appendChild(text2);
+        document.getElementById("text2").classList.add('textMobile');
+        document.getElementById("text2").classList.add('mined');
+    }
+  }
