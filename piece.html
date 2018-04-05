@@ -368,9 +368,9 @@ class Block{
         this.hash = this.calculateHash();
         this.nonce = 0;
         this.Mine(4);
-        this.ecoX= Math.random() * 1000 ;
-        this.ecoY= Math.random() * 1000;
-        this.ecoZ= Math.random() * 1000;
+        this.ecoX= Math.random() * 1000 -500;
+        this.ecoY= Math.random() * 1000 -500;
+        this.ecoZ= Math.random() * 1000 -500;
         this.color = Math.random() * 0xffffff;
       }
       calculateHash(){
