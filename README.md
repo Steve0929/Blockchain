@@ -1,6 +1,6 @@
 # Blockchain
 Interactive Blockchain
-Proof of concept
+This is a Proof of concept 
 
 ### Tech
 
