@@ -1,6 +1,8 @@
 # Blockchain
-Interactive Blockchain
-This is a Proof of concept 
+Interactive Blockchain is a Proof of concept which helps to visualize in a tridimensional space a Blockchain where users can add new blocks(data), see the hashing process and check the integrity of the chain.
+
+Whenever a user adds a block to the chain, the changes will be reflected in real time. The new block will be rendered in the tridimensional space and any user will be able to check the data and hash of the added block.
+
 
 ### Tech
 
