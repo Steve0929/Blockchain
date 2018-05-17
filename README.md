@@ -22,9 +22,8 @@ In order to add a block to the chain the user needs to input a piece of data and
         var arr = [];
         while(this.hash.substring(0, difficulty) !== Array(difficulty+1).join('0')){
             arr[this.nonce]= this.hash;
-            //console.log("Minning block...");
+            console.log("Minning block...");
             this.hash = this.calculateHash();
-            //console.log(this.hash);
             this.nonce++;
         }
      } 
