@@ -10,8 +10,11 @@ Note that each block contains the following information:
 * X,Y,Z position coordinates in the 3D space.
 * Color.
 * Hash - The hash of the block which is calculated using Secure Hash Algorithm Sha256.
-  
-
+ ```sh
+ calculateHash(){
+        return Sha256.hash(this.nonce + this.index + this.timestamp + this.previousHash + JSON.stringify(this.data)).toString();
+      }
+``` 
 In order to add a block the user just needs to input a piece of data 
 Whenever a user adds a block to the chain, the changes will be reflected in real time. The new block will be rendered in the tridimensional space and any user will be able to check the data and hash of the added block. The position of the block on the environment and its color  will be determined randomly.
 
