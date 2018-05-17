@@ -9,14 +9,27 @@ Note that each block contains the following information:
 * Data - The data used by an user to create the block.
 * X,Y,Z position coordinates in the 3D space.
 * Color.
-* Hash - The hash of the block which is calculated using Secure Hash Algorithm Sha256.
-
-In order to add a block to the chain the user needs to input a piece of data and then start the mining.
+* Hash - The hash of the block which is calculated using Secure Hash Algorithm Sha256 in the following function.
  ```sh
  calculateHash(){
         return Sha256.hash(this.nonce + this.index + this.timestamp + this.previousHash + JSON.stringify(this.data)).toString();
       }
 ``` 
+In order to add a block to the chain the user needs to input a piece of data and then start the mining process.
+
+ ```sh
+  Mine(difficulty){
+        var arr = [];
+        while(this.hash.substring(0, difficulty) !== Array(difficulty+1).join('0')){
+            arr[this.nonce]= this.hash;
+            //console.log("Minning block...");
+            this.hash = this.calculateHash();
+            //console.log(this.hash);
+            this.nonce++;
+        }
+     } 
+``` 
+
 Whenever a user adds a block to the chain, the changes will be reflected in real time. The new block will be rendered in the tridimensional space and any user will be able to check the data and hash of the added block. The position of the block on the environment and its color  will be determined randomly.
 
 
