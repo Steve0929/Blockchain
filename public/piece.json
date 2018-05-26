@@ -1,0 +1,9 @@
+{
+  "blockChain": {
+    "GenesisBlock":{
+      "nonce": 0, "index":0, "previousHash": 0,
+      "data": "Genesis Block"
+      
+    }
+}
+}
