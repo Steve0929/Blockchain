@@ -173,9 +173,6 @@ color: rgb(82, 196, 26) !important;
 
 }
 #status{
-/*border-color:  rgb(91, 72, 162);
-background-color: rgb(116, 93, 197);
-color: rgb(6, 43, 0); */
 padding: 7px;
 }
 .img-circle{
@@ -282,17 +279,13 @@ padding: 3px !important;
 max-height: 290px !important;
 }
 
-
 }
-</style>
-
+  </style>
 <body>
 
 <div id="canvas" class="mobileEndHeight">
-<!--  <div id="blockContainer" class="stage containers z-depth-3"> -->
- <!-- </div> -->
-</div>
 
+</div>
 <div id="loader" class="loader">
 <div class="square" ></div>
 <div class="square"></div>
@@ -311,20 +304,9 @@ max-height: 290px !important;
   <img  id="cubeic"  onclick="toggleForm()" class="cubeIco" src="pieceImg/addc.png" width="65px" height="60px">
 </div>
 
-<!-- <div id="txtMobile" class=" auxM card card-body ">
-</div> -->
-
-<!--<div id="blockContainer" class="hiddeIt layer newBlockPos layer-1 light-blue darken-3 white-text"> -->
-
 <div id="blockContainer" class="hiddeIt layer newBlockPos layer-1 light-blue darken-3 white-text">
   <div style= "padding-top: 70px !important"; id="chati2" class="container-fluid colores2" >
     <div class="form">
-    <!--  <div class="modal-header">
-       <button type="button" class="close btn btn-danger"  onclick="ecs()"  aria-hidden="true">×</button>
-           <button type="button" id="ecs"  onclick="ecs()" class="btn btn-danger">X</button>
-     </div> -->
-
-
       <h1>Add a new block to the chain </h1>
       <br>
       <div  id="man2">
@@ -339,11 +321,8 @@ max-height: 290px !important;
        <br>
       <input type="text" id="datos" placeholder="Add some data to this block">
       <br>
-      <!-- <a href="#"><img src="pieceImg/min.png" class="img-circle"  onclick="startMining()" width="70" height="70" ></a> -->
       <button id="stM" type="button" onclick="startMining()"  class="btn btn-warning">Mine Block</button>
       <button id="chB" type="button" onclick="checkChain()" class="btn btn-warning">Check Blockchain</button>
-      <!-- <button id="add" type="button"  onclick="addToEcosystem()" class="btn btn-warning">Add to the Blockchain</button> -->
-
 
     </div>
   </div>
@@ -368,9 +347,9 @@ class Block{
         this.hash = this.calculateHash();
         this.nonce = 0;
         this.Mine(4);
-        this.ecoX= Math.random() * 1000 -500;
-        this.ecoY= Math.random() * 1000 -500;
-        this.ecoZ= Math.random() * 1000 -500;
+        this.ecoX= Math.random() * 1000-500;
+        this.ecoY= Math.random() * 1000-500;
+        this.ecoZ= Math.random() * 1000-500;
         this.color = Math.random() * 0xffffff;
       }
       calculateHash(){
@@ -380,9 +359,7 @@ class Block{
         var arr = [];
         while(this.hash.substring(0, difficulty) !== Array(difficulty+1).join('0')){
             arr[this.nonce]= this.hash;
-            //console.log("Minning block...");
             this.hash = this.calculateHash();
-            //console.log(this.hash);
             this.nonce++;
         }
         console.log("Mined "+this.hash);
@@ -404,7 +381,6 @@ class Block{
               document.getElementById("man").innerHTML = "<p>"+final;+".</p>";
               document.getElementById("status").innerHTML = "<p>"+"Status: Block mined and successfully added to the chain"+".</p>";
               document.getElementById("datos").innerHTML = "<p>"+"xd"+"</p>";
-              //document.getElementById("showDat").innerHTML = "<p>"+finalDat+"</p>";
                 }
           }
       }
@@ -416,11 +392,6 @@ class BlockChain{
         lastBlock(){
           return this.chain[this.chain.length -1];
         }
-    /*    addBlock(newBlock){
-          newBlock.previousHash = this.lastBlock().hash;
-          newBlock.hash = newBlock.calculateHash();
-          this.chain.push(newBlock);
-        } */
         createBlock(data){
           var previousBlock = this.lastBlock();
           var previousBlockHash = this.lastBlock().hash;
@@ -436,11 +407,6 @@ class BlockChain{
           for (var i = 1; i < this.chain.length; i++) {
               var  currentBlock = this.chain[i];
               var  previousBlock = this.chain[i-1];
-            /*
-              if(currentBlock.hash !== currentBlock.calculateHash()){
-                  console.log("Calculated hash is invalid");
-                  return false;
-              }*/
               if(currentBlock.previousHash !== previousBlock.hash){
                 return "The chain is not valid. A block hash is invalid.";
 
@@ -543,7 +509,6 @@ function addToEcosystem(){
 
 
 function toggleForm(){
-  //$( "#blockContainer" ).slideToggle(1);
   if(!toggleAddForm){
      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
         document.getElementById('blockContainer').classList.remove('scaleDownFormMobile');
@@ -585,21 +550,16 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var projector = new THREE.Projector();
 
-
 function init(){
 fov = 75;
 aspectRatio = WIDTH / HEIGHT;
 nearPlane = 1;
-farPlane = 2000; //3000
+farPlane = 4500; //3000
 cameraZ = farPlane / 3;
 var step = 0.5;
 camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane);
 
 document.getElementById("blockContainer").classList.remove('hiddeIt');
-//$( "#blockContainer" ).fadeOut(0);
-
-
-
 
 camera.position.z = cameraZ;
 scene = new THREE.Scene();
@@ -608,43 +568,21 @@ document.body.appendChild(container);
 document.body.style.margin = 0;
 document.body.style.overflow = 'hidden';
 geometry = new THREE.Geometry();
+
 //Adding the blocks of the blockChain
 var geometry = new THREE.Geometry();
 var lineGeometry = new THREE.Geometry();
 var positions = [];
-
 var geometryC = new THREE.BoxGeometry( 50, 50, 50 );
 var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-
-//var cube = new THREE.Mesh( geometryC, materialC );
-//scene.add( cube );
-
-/*dots
-for (i = 0; i <blockChain.chain.length; i++) {
-  var dotGeometry = new THREE.Geometry();
-  var x = blockChain.chain[i].ecoX;
-  var y = blockChain.chain[i].ecoY;
-  var z = blockChain.chain[i].ecoZ;
-  dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
-  var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
-  var dot = new THREE.Points( dotGeometry, dotMaterial );
-  dot.material.color.setHex(blockChain.chain[i].color);
-  scene.add(dot);
-  positions[i] = dot.position;
-  //geometry.vertices.push( dot.position );
-  geometry.vertices.push(new THREE.Vector3(x,y,z));
-} */
 
 for (i = 0; i <blockChain.chain.length; i++) {
   var dotGeometry = new THREE.BoxGeometry( 50, 50, 50 );
   var x = blockChain.chain[i].ecoX;
   var y = blockChain.chain[i].ecoY;
   var z = blockChain.chain[i].ecoZ;
-  //dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
   var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
-  // BASIC var materialC = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
   var materialC = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-  //var dot = new THREE.Points( dotGeometry, dotMaterial );
   var cube = new THREE.Mesh( geometryC, materialC );
   cube.material.color.setHex(blockChain.chain[i].color);
   cube.position.x = x;
@@ -653,47 +591,17 @@ for (i = 0; i <blockChain.chain.length; i++) {
   cube.userData.data = blockChain.chain[i].data;
   cube.userData.hash = blockChain.chain[i].hash;
   cube.userData.prevHash = blockChain.chain[i].previousHash;
-
   scene.add(cube);
   positions[i] = cube.position;
-  //geometry.vertices.push( dot.position );
   geometry.vertices.push(new THREE.Vector3(x,y,z));
 }
-
-
-
-var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color:  0xffffff, opacity: 1 } ) );
+var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color:  0x778899, opacity: 1 } ) );
 scene.add( line );
-/*
-socket.on('draw_mined_block', function(data){
-            console.log("draw mined");
-            var geometry = new THREE.Geometry();
-            var dotGeometry = new THREE.Geometry();
-            var x = blockChain.chain[blockChain.chain.length-1].ecoX;
-            var y = blockChain.chain[blockChain.chain.length-1].ecoY;
-            var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
-            dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
-            var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
-            var dot = new THREE.Points( dotGeometry, dotMaterial );
-            dot.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
-            scene.add(dot);
-            geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
-                                    blockChain.chain[blockChain.chain.length-2].ecoY,
-                                    blockChain.chain[blockChain.chain.length-2].ecoZ));
-            geometry.vertices.push(new THREE.Vector3(x,y,z));
-
-
-            var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff, opacity: 1 } ) );
-            scene.add( line );
-          });  */
 var flag = false;
-
-
 
 socket.on('draw_mined_block', function(data){
           scene.remove( linez );
           clearInterval(timer);
-
           var geometry = new THREE.Geometry();
           var dotGeometry = new THREE.BoxGeometry( 50, 50, 50 );
           var x = blockChain.chain[blockChain.chain.length-1].ecoX;
@@ -718,11 +626,9 @@ socket.on('draw_mined_block', function(data){
           scene.add( linez );
           var timer = setInterval( addStep, 500 );
           var oldLength = xd.length();
-
           function addStep() {
           vertices = geometry.vertices;
           vertices.push(xd);
-          //console.log((vertices));
           geometry = new THREE.Geometry();
           geometry.vertices = vertices;
           scene.remove( linez );
@@ -733,85 +639,47 @@ socket.on('draw_mined_block', function(data){
 
 });
 
-/*
-socket.on('draw_mined_block', function(data){
-          scene.remove( linez );
-          clearInterval(timer);
-
-          var geometry = new THREE.Geometry();
-          var dotGeometry = new THREE.Geometry();
-          var x = blockChain.chain[blockChain.chain.length-1].ecoX;
-          var y = blockChain.chain[blockChain.chain.length-1].ecoY;
-          var z = blockChain.chain[blockChain.chain.length-1].ecoZ;
-          dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
-          var dotMaterial = new THREE.PointsMaterial( { size: 20, sizeAttenuation: false } );
-          var dot = new THREE.Points( dotGeometry, dotMaterial );
-          dot.material.color.setHex(blockChain.chain[blockChain.chain.length-1].color);
-          scene.add(dot);
-          geometry.vertices.push(new THREE.Vector3(blockChain.chain[blockChain.chain.length-2].ecoX,
-                                  blockChain.chain[blockChain.chain.length-2].ecoY,
-                                  blockChain.chain[blockChain.chain.length-2].ecoZ));
-          var xd = new THREE.Vector3(x,y,z);
-          //geometry.vertices.push(new THREE.Vector3(x,y,z));
-          var linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x666666, opacity: 1 } ) );
-          scene.add( linez );
-          var timer = setInterval( addStep, 500 );
-          var oldLength = xd.length();
-          function addStep() {
-          vertices = geometry.vertices;
-          /*last = vertices[ vertices.length - 1 ];
-          vertices.push(
-          new THREE.Vector3(
-          last.x + ( xd.x) * step,
-          last.y + ( xd.y) * step,
-          last.z + ( xd.z)* step )
-          );*/
-          //vertices.push(xd.setLength(xd.length()));
-          //vertices.push(xd.divideScalar( 1 + ( 30 / oldLength ) ));
-          //xd.setLength(100);
-      /*    vertices.push(xd);
-          //console.log((vertices));
-          geometry = new THREE.Geometry();
-          geometry.vertices = vertices;
-          scene.remove( linez );
-          linez = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff, opacity: 1 } ))
-          scene.add( linez );
-          console.log("execut");
-          }
-
-});  */
-
-
-
 renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setClearColor (0x00000, 0 );
+renderer.setClearColor (0xffffff, 1 );
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(WIDTH, HEIGHT);
-controls = new THREE.OrbitControls( camera, renderer.domElement );
-controls.addEventListener( 'change', render );
-
-//container.appendChild(renderer.domElement);
 document.getElementById('canvas').appendChild(renderer.domElement);
+
 /* Event Listeners */
 window.addEventListener('resize', onWindowResize, false);
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 document.addEventListener('touchstart', onDocumentTouchStart, false);
 document.addEventListener('touchmove', onDocumentTouchMove, false);
 document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) { //Is on mobile device
+   addControls();
+  }
 }
-function animate() {
 
+
+var controlsAdded = false;
+function addControls(){
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls.addEventListener( 'change', render );
+    controlsAdded = true;
+}
+
+function animate() {
         requestAnimationFrame(animate);
-        controls.update();
+        if(controlsAdded){
+           controls.update();
+           }
         render();
-        //stats.update();
     }
 function render() {
 
   var time = Date.now() * 0.00005;
-  //camera.position.x += (mouseX - camera.position.x) * 0.05;
-  //camera.position.y += (-mouseY - camera.position.y) * 0.05;
-  //camera.lookAt(scene.position);
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ==false) { //Is on desktop device
+    camera.position.x += (mouseX - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY - camera.position.y) * 0.05;
+    camera.lookAt(scene.position);
+  }
+
   renderer.render(scene, camera);
     }
 
@@ -851,19 +719,12 @@ function render() {
         text2.style.width = 600;
         text2.style.height = 100;
         text2.style.backgroundColor = "";
-
-        //text2.style.top =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).y); + 'px';
-        //text2.style.left =   (createVector(xx, yy , zz , camera, WIDTH, HEIGHT ).x); + 'px';
-        //document.body.appendChild(text2);
-
        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
          text2.innerHTML = "Data: "+intersects[0].object.userData.data+"<br>Hash: "+  intersects[0].object.userData.hash;
           document.body.appendChild(text2);
           document.getElementById("text2").classList.add('textMobile2');
           document.getElementById("text2").classList.add('mined');
         }
-
-
         else{
         text2.innerHTML = "Data: "+intersects[0].object.userData.data+"<br>Hash: "+
                           intersects[0].object.userData.hash+"<br>Previous Hash: "+
@@ -885,7 +746,7 @@ function onDocumentMouseMove(e) {
 /*	Mobile users?  I got your back homey	*/
 function onDocumentTouchStart(e) {
    if (e.touches.length === 1) {
-       //e.preventDefault();
+      // e.preventDefault();
        mouseX = e.touches[0].pageX - windowHalfX;
        mouseY = e.touches[0].pageY - windowHalfY;
                }
@@ -893,9 +754,10 @@ function onDocumentTouchStart(e) {
 function onDocumentTouchMove(e) {
    if (e.touches.length === 1) {
        //mobile scroll
-       //e.preventDefault();
+       e.preventDefault();
        mouseX = e.touches[0].pageX - windowHalfX;
-       mouseY = e.touches[0].pageY - windowHalfY;
+       mouseY = e.touches[0].pageY- windowHalfY;
+
                }
            }
 function onWindowResize() {
@@ -905,7 +767,6 @@ camera.aspect = window.innerWidth / window.innerHeight;
 camera.updateProjectionMatrix();
 renderer.setSize(window.innerWidth, window.innerHeight);
            }
-</script>
-
-</body>
+    </script>
+  </body>
 </html>
