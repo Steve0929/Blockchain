@@ -29,7 +29,7 @@ In order to add a block to the chain the user needs to input a piece of data and
      } 
 ``` 
 
-Whenever a user adds a block to the chain, the changes will be reflected in real time. The new block will be rendered in the tridimensional space and any user will be able to check the data and hash of the added block. The position of the block on the environment and its color  will be determined randomly.
+Whenever a user adds a block to the chain, the changes will be reflected in real time. The new block will be rendered in the tridimensional space and any user will be able to check the data and hash of the added block. Both the position of the block on the environment and its color will be determined randomly.
 
 
 
